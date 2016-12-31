@@ -64,32 +64,32 @@ int main(int argc, char *argv[])
 	float rate_gyr_z = 0.0;     // [deg/s]
 
 
-	int  *Pacc_raw;
-	int  *Pmag_raw;
+	/*int  *Pacc_raw;
+	int  *Pmag_raw;*/
 	int  *Pgyr_raw;
-	int  acc_raw[3];
-	int  mag_raw[3];
+	/*int  acc_raw[3];
+	int  mag_raw[3];*/
 	int  gyr_raw[3];
 
-	Pacc_raw = acc_raw;
-	Pmag_raw = mag_raw;
+	/*Pacc_raw = acc_raw;
+	Pmag_raw = mag_raw;*/
 	Pgyr_raw = gyr_raw;
 
 
 	float gyroXangle = 0.0;
 	float gyroYangle = 0.0;
 	float gyroZangle = 0.0;
-	float AccYangle = 0.0;
+	/*float AccYangle = 0.0;
 	float AccXangle = 0.0;
 	float CFangleX = 0.0;
-	float CFangleY = 0.0;
+	float CFangleY = 0.0;*/
 
 	int startInt  = mymillis();
 	struct  timeval tvBegin, tvEnd,tvDiff;
 
-	signed int acc_y = 0;
+	/*signed int acc_y = 0;
 	signed int acc_x = 0;
-	signed int acc_z = 0;
+	signed int acc_z = 0;*/
 	signed int gyr_x = 0;
 	signed int gyr_y = 0;
 	signed int gyr_z = 0;
@@ -109,8 +109,8 @@ int main(int argc, char *argv[])
 
 
 	//read ACC and GYR data
-	readMAG(Pmag_raw);
-	readACC(Pacc_raw);
+	/*readMAG(Pmag_raw);
+	readACC(Pacc_raw);*/
 	readGYR(Pgyr_raw);
 
 	//Convert Gyro raw to degrees per second
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 
 
 
-
+	/*
 	//Convert Accelerometer values to degrees
 	AccXangle = (float) (atan2(*(acc_raw+1),*(acc_raw+2))+M_PI)*RAD_TO_DEG;
 	AccYangle = (float) (atan2(*(acc_raw+2),*acc_raw)+M_PI)*RAD_TO_DEG;
@@ -144,9 +144,10 @@ int main(int argc, char *argv[])
 //      Complementary filter used to combine the accelerometer and gyro values.
 	CFangleX=AA*(CFangleX+rate_gyr_x*DT) +(1 - AA) * AccXangle;
 	CFangleY=AA*(CFangleY+rate_gyr_y*DT) +(1 - AA) * AccYangle;
+	*/
 
-
-	printf ("   GyroX  %7.3f \t AccXangle \e[m %7.3f \t \033[22;31mCFangleX %7.3f\033[0m\t GyroY  %7.3f \t AccYangle %7.3f \t \033[22;36mCFangleY %7.3f\t\033[0m\n",gyroXangle,AccXangle,CFangleX,gyroYangle,AccYangle,CFangleY);
+	//printf ("   GyroX  %7.3f \t AccXangle \e[m %7.3f \t \033[22;31mCFangleX %7.3f\033[0m\t GyroY  %7.3f \t AccYangle %7.3f \t \033[22;36mCFangleY %7.3f\t\033[0m\n",gyroXangle,AccXangle,CFangleX,gyroYangle,AccYangle,CFangleY);
+	printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \n", gyroXangle, gyroYangle, gyroZangle);
 
 	//Each loop should be at least 20ms.
         while(mymillis() - startInt < 20)
