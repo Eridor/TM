@@ -120,11 +120,11 @@ void enableIMU()
         }
 
  // Enable accelerometer.
-	writeAccReg(LSM303_CTRL_REG1_A, 0b01010111); //  z,y,x axis enabled , 100Hz data rate
-	writeAccReg(LSM303_CTRL_REG4_A, 0b00101000); // +/- 8G full scale: FS = 10 on DLHC, high resolution output mode
+	//writeAccReg(LSM303_CTRL_REG1_A, 0b01010111); //  z,y,x axis enabled , 100Hz data rate
+	//writeAccReg(LSM303_CTRL_REG4_A, 0b00101000); // +/- 8G full scale: FS = 10 on DLHC, high resolution output mode
 
  // Enable magnetometer
-        writeMagReg(LSM303_MR_REG_M, 0x00);  // enable magnometer
+        //writeMagReg(LSM303_MR_REG_M, 0x00);  // enable magnometer
 
  // Enable Gyro
         writeGyrReg(L3G_CTRL_REG1, 0b00001111); // Normal power mode, all axes enabled
