@@ -165,11 +165,6 @@ void specialKeys( int key, int x, int y ) {
   glutPostRedisplay();
  
 }
- 
-// ----------------------------------------------------------
-// main() function
-// ----------------------------------------------------------
-// NOPE
 //------------------ OPENGL ------------------ \\
 
 
@@ -195,15 +190,12 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
 }
 
 
-float rate_gyr_y;   // [deg/s]
+	float rate_gyr_y;   // [deg/s]
 	float rate_gyr_x;    // [deg/s]
 	float rate_gyr_z;     // [deg/s]
 
-
 	int  *Pgyr_raw;
 	int  gyr_raw[3];
-
-
 
 	float gyroXangle;
 	float gyroYangle;
@@ -220,7 +212,8 @@ float rate_gyr_y;   // [deg/s]
 	float yData[5];
 	float zData[5];
 	int counter;
-void readData(){
+
+	void readData(){
 	startInt = mymillis();
 
 	readGYR(Pgyr_raw);
@@ -230,25 +223,10 @@ void readData(){
 	rate_gyr_y = (float) *(gyr_raw+1) * G_GAIN;
 	rate_gyr_z = (float) *(gyr_raw+2) * G_GAIN;
 
-
-/*
-	//Calculate the angles from the gyro
-	if(rate_gyr_x > 2 || rate_gyr_x < -2){
-		gyroXangle+=rate_gyr_x*DT;
-		rotate_x += rate_gyr_x*DT;
-	}
-	if (rate_gyr_y > 2 || rate_gyr_y < -2){
-		gyroYangle+=rate_gyr_y*DT;
-		rotate_y += rate_gyr_y*DT;
-	}
-	*/
 	xData[counter] = rate_gyr_x*DT;
 	yData[counter] = rate_gyr_y*DT;
 	zData[counter] = rate_gyr_z*DT;
-	
-	
-	/*if (rate_gyr_z > 2 || rate_gyr_z < -2)
-		gyroZangle+=rate_gyr_z*DT;*/
+
 	counter++;
 	if(counter == 5){
 		counter = 0;
@@ -265,16 +243,13 @@ void readData(){
 			rotate_z += buffZ*10;
 		glutPostRedisplay();
 	}
-	//printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
-	/*//Each loop should be at least 20ms.
+	//Each loop should be at least 20ms.
         while(mymillis() - startInt < 20)
         {
             usleep(100);
-        }*/
+        }
 
-	//printf("Loop Time %d\t", mymillis()- startInt);
-	
-	
+	printf("\t Loop Time %d\t", mymillis()- startInt);		
 }
 
 int main(int argc, char *argv[])
@@ -283,9 +258,7 @@ int main(int argc, char *argv[])
 	rate_gyr_x = 0.0;    // [deg/s]
 	rate_gyr_z = 0.0;     // [deg/s]
 
-
 	Pgyr_raw = gyr_raw;
-
 
 	gyroXangle = 0.0;
 	gyroYangle = 0.0;
@@ -293,7 +266,6 @@ int main(int argc, char *argv[])
 
 	startInt  = mymillis();
 	
-
 	gyr_x = 0;
 	gyr_y = 0;
 	gyr_z = 0;
@@ -314,7 +286,7 @@ int main(int argc, char *argv[])
  
   // Create window
   glutCreateWindow("Awesome Cube");
-  //glutReshapeWindow(600, 600);
+  
   //  Enable Z-buffer depth test
   glEnable(GL_DEPTH_TEST);
  
@@ -326,13 +298,5 @@ int main(int argc, char *argv[])
   glutMainLoop();
 //OGL
 
-	
-
-
-
-	/*while(1)
-	{
-	
-    }*/
 }
 
