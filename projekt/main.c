@@ -241,8 +241,8 @@ void readData(){
 	
 	/*if (rate_gyr_z > 2 || rate_gyr_z < -2)
 		gyroZangle+=rate_gyr_z*DT;*/
-
-	if(counter == 4){
+	counter++;
+	if(counter == 5){
 		counter = 0;
 		float buffX = (xData[0]+xData[1]+xData[2]+xData[3]+xData[4])/5.0;
 		float buffY = (yData[0]+yData[1]+yData[2]+yData[3]+yData[4])/5.0;
