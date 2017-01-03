@@ -210,6 +210,8 @@ float rate_gyr_y;   // [deg/s]
 	signed int gyr_y;
 	signed int gyr_z;
 
+	float xData[5], yData[5]
+	int counter;
 void readData(){
 	startInt = mymillis();
 
@@ -218,10 +220,10 @@ void readData(){
 	//Convert Gyro raw to degrees per second
 	rate_gyr_x = (float) *gyr_raw * G_GAIN;
 	rate_gyr_y = (float) *(gyr_raw+1) * G_GAIN;
-	rate_gyr_z = (float) *(gyr_raw+2) * G_GAIN;
+	//rate_gyr_z = (float) *(gyr_raw+2) * G_GAIN;
 
 
-
+/*
 	//Calculate the angles from the gyro
 	if(rate_gyr_x > 2 || rate_gyr_x < -2){
 		gyroXangle+=rate_gyr_x*DT;
@@ -229,13 +231,28 @@ void readData(){
 	}
 	if (rate_gyr_y > 2 || rate_gyr_y < -2){
 		gyroYangle+=rate_gyr_y*DT;
-		rotate_y += rate_gyr_x*DT;
+		rotate_y += rate_gyr_y*DT;
 	}
-	if (rate_gyr_z > 2 || rate_gyr_z < -2)
-		gyroZangle+=rate_gyr_z*DT;
+	*/
+	xData[counter] = rate_gyr_x*DT;
+	yData[counter] = rate_gyr_y*DT;
+	
+	
+	/*if (rate_gyr_z > 2 || rate_gyr_z < -2)
+		gyroZangle+=rate_gyr_z*DT;*/
 
-	printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
-	glutPostRedisplay();
+	if(counter == 4){
+		counter = 0;
+		float buffX = xData[0]+xData[1]+xData[2]+xData[3]+xData[4])/5.0;
+		float buffY = yData[0]+yData[1]+yData[2]+yData[3]+yData[4])/5.0;
+		printf("   GyroX  %7.3f \t GyroY  %7.3f \n", buffX, buffY);
+	
+		rotate_x += buffX;
+		rotate_y += buffY;
+		glutPostRedisplay();
+	}
+	//printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
+	
 	//Each loop should be at least 20ms.
         while(mymillis() - startInt < 20)
         {
@@ -243,6 +260,7 @@ void readData(){
         }
 
 	//printf("Loop Time %d\t", mymillis()- startInt);
+	
 	
 }
 
@@ -266,7 +284,7 @@ int main(int argc, char *argv[])
 	gyr_x = 0;
 	gyr_y = 0;
 	gyr_z = 0;
-
+	counter = 0;
 
     signal(SIGINT, INThandler);
 
@@ -283,7 +301,7 @@ int main(int argc, char *argv[])
  
   // Create window
   glutCreateWindow("Awesome Cube");
-  glutReshapeWindow(600, 600);
+  //glutReshapeWindow(600, 600);
   //  Enable Z-buffer depth test
   glEnable(GL_DEPTH_TEST);
  
