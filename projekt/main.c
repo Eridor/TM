@@ -255,7 +255,7 @@ void readData(){
 	
 		rotate_x += buffX*10;
 		rotate_y += buffY*10;
-		rotate_Z += buffZ*10;
+		rotate_z += buffZ*10;
 		glutPostRedisplay();
 	}
 	//printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
