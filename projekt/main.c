@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
   // Callback functions
   glutDisplayFunc(display);
   glutSpecialFunc(specialKeys);
-  glutidleFunc(readData);
+  glutIdleFunc(readData);
   //  Pass control to GLUT for events
   glutMainLoop();
 //OGL
