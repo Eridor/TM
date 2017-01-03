@@ -53,6 +53,7 @@ void specialKeys();
 // ----------------------------------------------------------
 double rotate_y=0; 
 double rotate_x=0;
+double rotate_z=0;
  
 // ----------------------------------------------------------
 // display() Callback function
@@ -72,6 +73,7 @@ void display(){
   // Rotate when user changes rotate_x and rotate_y
   glRotatef( rotate_x, 1.0, 0.0, 0.0 );
   glRotatef( rotate_y, 0.0, 1.0, 0.0 );
+  glRotatef( rotate_z, 0.0, 0.0, 1.0 );
  
   // Other Transformations
   // glScalef( 2.0, 2.0, 0.0 );          // Not included
@@ -212,6 +214,7 @@ float rate_gyr_y;   // [deg/s]
 
 	float xData[5];
 	float yData[5];
+	float zData[5];
 	int counter;
 void readData(){
 	startInt = mymillis();
@@ -220,7 +223,7 @@ void readData(){
 
 	//Convert Gyro raw to degrees per second
 	rate_gyr_x = (float) *gyr_raw * G_GAIN;
-	//rate_gyr_y = (float) *(gyr_raw+1) * G_GAIN;
+	rate_gyr_y = (float) *(gyr_raw+1) * G_GAIN;
 	rate_gyr_z = (float) *(gyr_raw+2) * G_GAIN;
 
 
@@ -236,7 +239,8 @@ void readData(){
 	}
 	*/
 	xData[counter] = rate_gyr_x*DT;
-	yData[counter] = rate_gyr_z*DT;
+	yData[counter] = rate_gyr_y*DT;
+	zData[counter] = rate_gyr_z*DT;
 	
 	
 	/*if (rate_gyr_z > 2 || rate_gyr_z < -2)
@@ -246,10 +250,12 @@ void readData(){
 		counter = 0;
 		float buffX = (xData[0]+xData[1]+xData[2]+xData[3]+xData[4])/5.0;
 		float buffY = (yData[0]+yData[1]+yData[2]+yData[3]+yData[4])/5.0;
-		printf("   GyroX  %7.3f \t GyroY  %7.3f \n", buffX, buffY);
+		float buffZ = (zData[0]+zData[1]+zData[2]+zData[3]+zData[4])/5.0;
+		printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \n", buffX, buffY, buffZ);
 	
 		rotate_x += buffX*10;
 		rotate_y += buffY*10;
+		rotate_Z += buffZ*10;
 		glutPostRedisplay();
 	}
 	//printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
