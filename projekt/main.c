@@ -210,7 +210,8 @@ float rate_gyr_y;   // [deg/s]
 	signed int gyr_y;
 	signed int gyr_z;
 
-	float xData[5], yData[5]
+	float xData[5];
+	float yData[5];
 	int counter;
 void readData(){
 	startInt = mymillis();
@@ -243,8 +244,8 @@ void readData(){
 
 	if(counter == 4){
 		counter = 0;
-		float buffX = xData[0]+xData[1]+xData[2]+xData[3]+xData[4])/5.0;
-		float buffY = yData[0]+yData[1]+yData[2]+yData[3]+yData[4])/5.0;
+		float buffX = (xData[0]+xData[1]+xData[2]+xData[3]+xData[4])/5.0;
+		float buffY = (yData[0]+yData[1]+yData[2]+yData[3]+yData[4])/5.0;
 		printf("   GyroX  %7.3f \t GyroY  %7.3f \n", buffX, buffY);
 	
 		rotate_x += buffX;
