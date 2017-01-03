@@ -248,17 +248,16 @@ void readData(){
 		float buffY = (yData[0]+yData[1]+yData[2]+yData[3]+yData[4])/5.0;
 		printf("   GyroX  %7.3f \t GyroY  %7.3f \n", buffX, buffY);
 	
-		rotate_x += buffX;
-		rotate_y += buffY;
+		rotate_x += buffX*10;
+		rotate_y += buffY*10;
 		glutPostRedisplay();
 	}
 	//printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
-	
-	//Each loop should be at least 20ms.
+	/*//Each loop should be at least 20ms.
         while(mymillis() - startInt < 20)
         {
             usleep(100);
-        }
+        }*/
 
 	//printf("Loop Time %d\t", mymillis()- startInt);
 	
