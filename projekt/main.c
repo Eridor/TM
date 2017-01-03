@@ -257,9 +257,12 @@ void readData(){
 		float buffZ = (zData[0]+zData[1]+zData[2]+zData[3]+zData[4])/5.0;
 		printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \n", buffX, buffY, buffZ);
 	
-		rotate_x += buffX*10;
-		rotate_y += buffY*10;
-		rotate_z += buffZ*10;
+		if(buffX > 0.05 || buffX < -0.05)
+			rotate_x += buffX*10;
+		if(buffY > 0.05 || buffY < -0.05)
+			rotate_y += buffY*10;
+		if(buffZ > 0.05 || buffZ < -0.05)
+			rotate_z += buffZ*10;
 		glutPostRedisplay();
 	}
 	//printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
