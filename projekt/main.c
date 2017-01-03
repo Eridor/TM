@@ -248,8 +248,6 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
         {
             usleep(100);
         }
-
-	printf("\t Loop Time %d\t", mymillis()- startInt);		
 }
 
 int main(int argc, char *argv[])
