@@ -188,62 +188,29 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
     return (diff<0);
 }
 
-int main(int argc, char *argv[])
-{
-//OGL
-//  Initialize GLUT and process user parameters
-  glutInit(&argc,argv);
- 
-  //  Request double buffered true color window with Z-buffer
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
- 
-  // Create window
-  glutCreateWindow("Awesome Cube");
- 
-  //  Enable Z-buffer depth test
-  glEnable(GL_DEPTH_TEST);
- 
-  // Callback functions
-  glutDisplayFunc(display);
-  //glutSpecialFunc(specialKeys);
- 
-  //  Pass control to GLUT for events
-  glutMainLoop();
-//OGL
 
-	float rate_gyr_y = 0.0;   // [deg/s]
-	float rate_gyr_x = 0.0;    // [deg/s]
-	float rate_gyr_z = 0.0;     // [deg/s]
+float rate_gyr_y;   // [deg/s]
+	float rate_gyr_x;    // [deg/s]
+	float rate_gyr_z;     // [deg/s]
 
 
 	int  *Pgyr_raw;
 	int  gyr_raw[3];
 
-	Pgyr_raw = gyr_raw;
 
 
-	float gyroXangle = 0.0;
-	float gyroYangle = 0.0;
-	float gyroZangle = 0.0;
+	float gyroXangle;
+	float gyroYangle;
+	float gyroZangle;
 
-	int startInt  = mymillis();
+	int startInt;
 	struct  timeval tvBegin, tvEnd,tvDiff;
 
-	signed int gyr_x = 0;
-	signed int gyr_y = 0;
-	signed int gyr_z = 0;
+	signed int gyr_x;
+	signed int gyr_y;
+	signed int gyr_z;
 
-
-        signal(SIGINT, INThandler);
-
-	enableIMU();
-
-	gettimeofday(&tvBegin, NULL);
-
-
-
-	while(1)
-	{
+void readData(){
 	startInt = mymillis();
 
 	readGYR(Pgyr_raw);
@@ -276,6 +243,65 @@ int main(int argc, char *argv[])
         }
 
 	//printf("Loop Time %d\t", mymillis()- startInt);
-    }
+	
+}
+
+int main(int argc, char *argv[])
+{
+	rate_gyr_y = 0.0;   // [deg/s]
+	rate_gyr_x = 0.0;    // [deg/s]
+	rate_gyr_z = 0.0;     // [deg/s]
+
+
+	Pgyr_raw = gyr_raw;
+
+
+	gyroXangle = 0.0;
+	gyroYangle = 0.0;
+	gyroZangle = 0.0;
+
+	startInt  = mymillis();
+	timeval tvBegin, tvEnd,tvDiff;
+
+	gyr_x = 0;
+	gyr_y = 0;
+	gyr_z = 0;
+
+
+    signal(SIGINT, INThandler);
+
+	enableIMU();
+
+	gettimeofday(&tvBegin, NULL);
+	
+//OGL
+//  Initialize GLUT and process user parameters
+  glutInit(&argc,argv);
+ 
+  //  Request double buffered true color window with Z-buffer
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+ 
+  // Create window
+  glutCreateWindow("Awesome Cube");
+  glutReshapeWindow(800, 800);
+  //  Enable Z-buffer depth test
+  glEnable(GL_DEPTH_TEST);
+ 
+  // Callback functions
+  glutDisplayFunc(display);
+  glutSpecialFunc(specialKeys);
+  glutidleFunc(readData);
+  //  Pass control to GLUT for events
+  glutMainLoop();
+//OGL
+
+	
+
+
+
+	/*while(1)
+	{
+	
+    }*/
 }
 
