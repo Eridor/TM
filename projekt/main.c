@@ -20,6 +20,15 @@
 #include "sensor.c"
 #include "i2c-dev.h"
 
+#include <stdarg.h>
+#define GL_GLEXT_PROTOTYPES
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+
 #define X   0
 #define Y   1
 #define Z   2
@@ -32,7 +41,130 @@
 #define RAD_TO_DEG 57.29578
 #define M_PI 3.14159265358979323846
 
-
+//------------------ OPENGL ------------------ \\
+// ----------------------------------------------------------
+// Function Prototypes
+// ----------------------------------------------------------
+void display();
+void specialKeys();
+ 
+// ----------------------------------------------------------
+// Global Variables
+// ----------------------------------------------------------
+double rotate_y=0; 
+double rotate_x=0;
+ 
+// ----------------------------------------------------------
+// display() Callback function
+// ----------------------------------------------------------
+void display(){
+ 
+  //  Clear screen and Z-buffer
+  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+ 
+  // Reset transformations
+  glLoadIdentity();
+ 
+  // Other Transformations
+  // glTranslatef( 0.1, 0.0, 0.0 );      // Not included
+  // glRotatef( 180, 0.0, 1.0, 0.0 );    // Not included
+ 
+  // Rotate when user changes rotate_x and rotate_y
+  glRotatef( rotate_x, 1.0, 0.0, 0.0 );
+  glRotatef( rotate_y, 0.0, 1.0, 0.0 );
+ 
+  // Other Transformations
+  // glScalef( 2.0, 2.0, 0.0 );          // Not included
+ 
+  //Multi-colored side - FRONT
+  glBegin(GL_POLYGON);
+ 
+  glColor3f( 1.0, 0.0, 0.0 );     glVertex3f(  0.5, -0.5, -0.5 );      // P1 is red
+  glColor3f( 0.0, 1.0, 0.0 );     glVertex3f(  0.5,  0.5, -0.5 );      // P2 is green
+  glColor3f( 0.0, 0.0, 1.0 );     glVertex3f( -0.5,  0.5, -0.5 );      // P3 is blue
+  glColor3f( 1.0, 0.0, 1.0 );     glVertex3f( -0.5, -0.5, -0.5 );      // P4 is purple
+ 
+  glEnd();
+ 
+  // White side - BACK
+  glBegin(GL_POLYGON);
+  glColor3f(   1.0,  1.0, 1.0 );
+  glVertex3f(  0.5, -0.5, 0.5 );
+  glVertex3f(  0.5,  0.5, 0.5 );
+  glVertex3f( -0.5,  0.5, 0.5 );
+  glVertex3f( -0.5, -0.5, 0.5 );
+  glEnd();
+ 
+  // Purple side - RIGHT
+  glBegin(GL_POLYGON);
+  glColor3f(  1.0,  0.0,  1.0 );
+  glVertex3f( 0.5, -0.5, -0.5 );
+  glVertex3f( 0.5,  0.5, -0.5 );
+  glVertex3f( 0.5,  0.5,  0.5 );
+  glVertex3f( 0.5, -0.5,  0.5 );
+  glEnd();
+ 
+  // Green side - LEFT
+  glBegin(GL_POLYGON);
+  glColor3f(   0.0,  1.0,  0.0 );
+  glVertex3f( -0.5, -0.5,  0.5 );
+  glVertex3f( -0.5,  0.5,  0.5 );
+  glVertex3f( -0.5,  0.5, -0.5 );
+  glVertex3f( -0.5, -0.5, -0.5 );
+  glEnd();
+ 
+  // Blue side - TOP
+  glBegin(GL_POLYGON);
+  glColor3f(   0.0,  0.0,  1.0 );
+  glVertex3f(  0.5,  0.5,  0.5 );
+  glVertex3f(  0.5,  0.5, -0.5 );
+  glVertex3f( -0.5,  0.5, -0.5 );
+  glVertex3f( -0.5,  0.5,  0.5 );
+  glEnd();
+ 
+  // Red side - BOTTOM
+  glBegin(GL_POLYGON);
+  glColor3f(   1.0,  0.0,  0.0 );
+  glVertex3f(  0.5, -0.5, -0.5 );
+  glVertex3f(  0.5, -0.5,  0.5 );
+  glVertex3f( -0.5, -0.5,  0.5 );
+  glVertex3f( -0.5, -0.5, -0.5 );
+  glEnd();
+ 
+  glFlush();
+  glutSwapBuffers();
+ 
+}
+ 
+// ----------------------------------------------------------
+// specialKeys() Callback Function
+// ----------------------------------------------------------
+void specialKeys( int key, int x, int y ) {
+ 
+  //  Right arrow - increase rotation by 5 degree
+  if (key == GLUT_KEY_RIGHT)
+    rotate_y += 5;
+ 
+  //  Left arrow - decrease rotation by 5 degree
+  else if (key == GLUT_KEY_LEFT)
+    rotate_y -= 5;
+ 
+  else if (key == GLUT_KEY_UP)
+    rotate_x += 5;
+ 
+  else if (key == GLUT_KEY_DOWN)
+    rotate_x -= 5;
+ 
+  //  Request display update
+  glutPostRedisplay();
+ 
+}
+ 
+// ----------------------------------------------------------
+// main() function
+// ----------------------------------------------------------
+// NOPE
+//------------------ OPENGL ------------------ \\
 
 
 void  INThandler(int sig)
@@ -58,38 +190,45 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
 
 int main(int argc, char *argv[])
 {
+//OGL
+//  Initialize GLUT and process user parameters
+  glutInit(&argc,argv);
+ 
+  //  Request double buffered true color window with Z-buffer
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+ 
+  // Create window
+  glutCreateWindow("Awesome Cube");
+ 
+  //  Enable Z-buffer depth test
+  glEnable(GL_DEPTH_TEST);
+ 
+  // Callback functions
+  glutDisplayFunc(display);
+  //glutSpecialFunc(specialKeys);
+ 
+  //  Pass control to GLUT for events
+  glutMainLoop();
+//OGL
 
 	float rate_gyr_y = 0.0;   // [deg/s]
 	float rate_gyr_x = 0.0;    // [deg/s]
 	float rate_gyr_z = 0.0;     // [deg/s]
 
 
-	/*int  *Pacc_raw;
-	int  *Pmag_raw;*/
 	int  *Pgyr_raw;
-	/*int  acc_raw[3];
-	int  mag_raw[3];*/
 	int  gyr_raw[3];
 
-	/*Pacc_raw = acc_raw;
-	Pmag_raw = mag_raw;*/
 	Pgyr_raw = gyr_raw;
 
 
 	float gyroXangle = 0.0;
 	float gyroYangle = 0.0;
 	float gyroZangle = 0.0;
-	/*float AccYangle = 0.0;
-	float AccXangle = 0.0;
-	float CFangleX = 0.0;
-	float CFangleY = 0.0;*/
 
 	int startInt  = mymillis();
 	struct  timeval tvBegin, tvEnd,tvDiff;
 
-	/*signed int acc_y = 0;
-	signed int acc_x = 0;
-	signed int acc_z = 0;*/
 	signed int gyr_x = 0;
 	signed int gyr_y = 0;
 	signed int gyr_z = 0;
@@ -107,10 +246,6 @@ int main(int argc, char *argv[])
 	{
 	startInt = mymillis();
 
-
-	//read ACC and GYR data
-	/*readMAG(Pmag_raw);
-	readACC(Pacc_raw);*/
 	readGYR(Pgyr_raw);
 
 	//Convert Gyro raw to degrees per second
@@ -121,35 +256,17 @@ int main(int argc, char *argv[])
 
 
 	//Calculate the angles from the gyro
-	if(rate_gyr_x > 2 || rate_gyr_x < -2)
+	if(rate_gyr_x > 2 || rate_gyr_x < -2){
 		gyroXangle+=rate_gyr_x*DT;
-	if (rate_gyr_y > 2 || rate_gyr_y < -2)
+		rotate_x += rate_gyr_x*DT;
+	}
+	if (rate_gyr_y > 2 || rate_gyr_y < -2){
 		gyroYangle+=rate_gyr_y*DT;
+		rotate_y += rate_gyr_x*DT;
+	}
 	if (rate_gyr_z > 2 || rate_gyr_z < -2)
 		gyroZangle+=rate_gyr_z*DT;
 
-
-
-	/*
-	//Convert Accelerometer values to degrees
-	AccXangle = (float) (atan2(*(acc_raw+1),*(acc_raw+2))+M_PI)*RAD_TO_DEG;
-	AccYangle = (float) (atan2(*(acc_raw+2),*acc_raw)+M_PI)*RAD_TO_DEG;
-
-
-	//Change the rotation value of the accelerometer to -/+ 180
-	if (AccXangle >180)
-	{
-		AccXangle -= (float)360.0;
-	}
-	if (AccYangle >180)
-		AccYangle -= (float)360.0;
-
-//      Complementary filter used to combine the accelerometer and gyro values.
-	CFangleX=AA*(CFangleX+rate_gyr_x*DT) +(1 - AA) * AccXangle;
-	CFangleY=AA*(CFangleY+rate_gyr_y*DT) +(1 - AA) * AccYangle;
-	*/
-
-	//printf ("   GyroX  %7.3f \t AccXangle \e[m %7.3f \t \033[22;31mCFangleX %7.3f\033[0m\t GyroY  %7.3f \t AccYangle %7.3f \t \033[22;36mCFangleY %7.3f\t\033[0m\n",gyroXangle,AccXangle,CFangleX,gyroYangle,AccYangle,CFangleY);
 	printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
 
 	//Each loop should be at least 20ms.
