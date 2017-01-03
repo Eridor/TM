@@ -233,9 +233,9 @@ void readData(){
 	}
 	if (rate_gyr_z > 2 || rate_gyr_z < -2)
 		gyroZangle+=rate_gyr_z*DT;
-glutPostRedisplay();
-	printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
 
+	printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
+	glutPostRedisplay();
 	//Each loop should be at least 20ms.
         while(mymillis() - startInt < 20)
         {
@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
  
   // Create window
   glutCreateWindow("Awesome Cube");
-  glutReshapeWindow(800, 800);
+  glutReshapeWindow(600, 600);
   //  Enable Z-buffer depth test
   glEnable(GL_DEPTH_TEST);
  
