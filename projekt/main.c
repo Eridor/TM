@@ -233,7 +233,7 @@ void readData(){
 	}
 	if (rate_gyr_z > 2 || rate_gyr_z < -2)
 		gyroZangle+=rate_gyr_z*DT;
-
+glutPostRedisplay();
 	printf("   GyroX  %7.3f \t GyroY  %7.3f \t GyroZ  %7.3f \t X %7.3f \t Y %7.3f \t Z %7.3f \n", gyroXangle, gyroYangle, gyroZangle, rate_gyr_x, rate_gyr_y, rate_gyr_z);
 
 	//Each loop should be at least 20ms.
