@@ -261,7 +261,7 @@ int main(int argc, char *argv[])
 	gyroZangle = 0.0;
 
 	startInt  = mymillis();
-	timeval tvBegin, tvEnd,tvDiff;
+	
 
 	gyr_x = 0;
 	gyr_y = 0;
