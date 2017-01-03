@@ -220,8 +220,8 @@ void readData(){
 
 	//Convert Gyro raw to degrees per second
 	rate_gyr_x = (float) *gyr_raw * G_GAIN;
-	rate_gyr_y = (float) *(gyr_raw+1) * G_GAIN;
-	//rate_gyr_z = (float) *(gyr_raw+2) * G_GAIN;
+	//rate_gyr_y = (float) *(gyr_raw+1) * G_GAIN;
+	rate_gyr_z = (float) *(gyr_raw+2) * G_GAIN;
 
 
 /*
@@ -236,7 +236,7 @@ void readData(){
 	}
 	*/
 	xData[counter] = rate_gyr_x*DT;
-	yData[counter] = rate_gyr_y*DT;
+	yData[counter] = rate_gyr_z*DT;
 	
 	
 	/*if (rate_gyr_z > 2 || rate_gyr_z < -2)
